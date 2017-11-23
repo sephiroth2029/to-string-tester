@@ -49,7 +49,7 @@ public class FieldValueMatcher implements Matcher
                 else if (matches.size() != expectedMatches)
                 {
                     throw new MatcherException(
-                        "Expected " + expectedMatches + " match for field: " + propertyName + ". Found " + matches.size());
+                        "Expected " + expectedMatches + " verify for field: " + propertyName + ". Found " + matches.size());
                 }
                 else
                 {

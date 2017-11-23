@@ -17,12 +17,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class FieldValueMatcherTest
 {
-    private FieldValueMatcher subject;
+    private FieldValueMatcher sut;
 
     @Before
     public void setUp() throws Exception
     {
-        subject = new FieldValueMatcher(",", "=", Function.identity(), String::valueOf);
+        sut = new FieldValueMatcher(",", "=", Function.identity(), String::valueOf);
     }
 
     @Test
@@ -32,7 +32,7 @@ public class FieldValueMatcherTest
         properties.put("field1", Collections.singletonList("def"));
         properties.put("field2", Collections.singletonList("10"));
 
-        final String match = subject.match("field2=10,field1=def]abc", new Subject(null, properties, null));
+        final String match = sut.match("field2=10,field1=def]abc", new Subject(null, properties, null));
 
         assertThat(match).isEqualTo("field2=10,field1=def");
     }
@@ -43,7 +43,7 @@ public class FieldValueMatcherTest
         final Map<String, List<Object>> properties = new HashMap<>();
         properties.put("field3", Collections.singletonList("def"));
 
-        assertThatThrownBy(() -> subject.match("field2=10,field1=def]abc", new Subject(null, properties, null)))
+        assertThatThrownBy(() -> sut.match("field2=10,field1=def]abc", new Subject(null, properties, null)))
             .hasMessage("Expected field: field3");
     }
 
@@ -53,7 +53,7 @@ public class FieldValueMatcherTest
         final Map<String, List<Object>> properties = new HashMap<>();
         properties.put("field1", Arrays.asList("def", "def"));
 
-        final String match = subject.match("field1=def,field1=def]abc", new Subject(null, properties, null));
+        final String match = sut.match("field1=def,field1=def]abc", new Subject(null, properties, null));
 
         assertThat(match).isEqualTo("field1=def,field1=def");
     }
@@ -64,7 +64,7 @@ public class FieldValueMatcherTest
         final Map<String, List<Object>> properties = new HashMap<>();
         properties.put("field1", Collections.singletonList("def"));
 
-        assertThatThrownBy(() -> subject.match("field1=def,field1=def]abc", new Subject(null, properties, null)))
-            .hasMessage("Expected 1 match for field: field1. Found 2");
+        assertThatThrownBy(() -> sut.match("field1=def,field1=def]abc", new Subject(null, properties, null)))
+            .hasMessage("Expected 1 verify for field: field1. Found 2");
     }
 }

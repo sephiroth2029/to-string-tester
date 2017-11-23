@@ -10,12 +10,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class IdentityHashMatcherTest
 {
-    private IdentityHashMatcher subject;
+    private IdentityHashMatcher sut;
 
     @Before
     public void setUp() throws Exception
     {
-        subject = new IdentityHashMatcher();
+        sut = new IdentityHashMatcher();
     }
 
     @Test
@@ -23,7 +23,7 @@ public class IdentityHashMatcherTest
     {
         final DummyClass dummy = new DummyClass();
         final String hash = Integer.toHexString(System.identityHashCode(dummy));
-        final String match = subject.match(hash + " abc", new Subject(null, null, dummy));
+        final String match = sut.match(hash + " abc", new Subject(null, null, dummy));
         assertThat(match).isEqualTo(hash);
     }
 
@@ -33,7 +33,7 @@ public class IdentityHashMatcherTest
         final DummyClass dummy = new DummyClass();
         final String hash = Integer.toHexString(System.identityHashCode(dummy));
 
-        assertThatThrownBy(() -> subject.match("abc", new Subject(null, null, dummy)))
+        assertThatThrownBy(() -> sut.match("abc", new Subject(null, null, dummy)))
             .hasMessage("Expected hash code: " + hash);
     }
 

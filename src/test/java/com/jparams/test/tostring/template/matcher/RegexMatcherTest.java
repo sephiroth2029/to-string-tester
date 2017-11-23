@@ -8,18 +8,18 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class RegexMatcherTest
 {
-    private RegexMatcher subject;
+    private RegexMatcher sut;
 
     @Before
     public void setUp() throws Exception
     {
-        subject = new RegexMatcher("[a-z]{3}");
+        sut = new RegexMatcher("[a-z]{3}");
     }
 
     @Test
     public void returnsMatch() throws Exception
     {
-        final String match = subject.match("abcde", null);
+        final String match = sut.match("abcde", null);
         assertThat(match).isEqualTo("abc");
     }
 
@@ -33,7 +33,7 @@ public class RegexMatcherTest
     @Test
     public void failsOnMatch() throws Exception
     {
-        assertThatThrownBy(() -> subject.match("a123cdefg", null))
+        assertThatThrownBy(() -> sut.match("a123cdefg", null))
             .hasMessage("Expected text matching regex: ^([a-z]{3})");
     }
 }

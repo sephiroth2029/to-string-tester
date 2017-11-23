@@ -69,7 +69,7 @@ public final class ToStringTester
 
     public void verify() throws VerificationError
     {
-        final Subject subjectToVerify = new Subject(subject.getType(), properties, subject.getInstance());
+        template.verify(new Subject(subject.getType(), properties, subject.getInstance()));
     }
 
     public static ToStringTester forClass(final Class<?> clazz)

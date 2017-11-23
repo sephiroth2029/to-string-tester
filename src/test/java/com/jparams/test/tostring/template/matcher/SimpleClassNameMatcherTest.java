@@ -12,25 +12,25 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class SimpleClassNameMatcherTest
 {
-    private SimpleClassNameMatcher subject;
+    private SimpleClassNameMatcher sut;
 
     @Before
     public void setUp() throws Exception
     {
-        subject = new SimpleClassNameMatcher();
+        sut = new SimpleClassNameMatcher();
     }
 
     @Test
     public void returnsMatch() throws Exception
     {
-        final String match = subject.match("BigDecimal", new Subject(BigDecimal.class, null, null));
+        final String match = sut.match("BigDecimal", new Subject(BigDecimal.class, null, null));
         assertThat(match).isEqualTo("BigDecimal");
     }
 
     @Test
     public void returnsExpected() throws Exception
     {
-        assertThatThrownBy(() -> subject.match("String", new Subject(BigDecimal.class, null, null)))
+        assertThatThrownBy(() -> sut.match("String", new Subject(BigDecimal.class, null, null)))
             .hasMessage("Expected class name: BigDecimal");
     }
 }

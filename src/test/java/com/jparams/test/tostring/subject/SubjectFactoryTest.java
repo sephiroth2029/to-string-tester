@@ -19,15 +19,15 @@ public class SubjectFactoryTest
                                              .buildInstanceOf(Student.class)
                                              .get();
 
-        final Subject subject = SubjectFactory.createSubject(student);
+        final Subject sut = SubjectFactory.createSubject(student);
 
-        assertThat(subject.getType()).isSameAs(Student.class);
+        assertThat(sut.getType()).isSameAs(Student.class);
 
-        assertThat(subject.getInstance()).isSameAs(student);
+        assertThat(sut.getInstance()).isSameAs(student);
 
-        assertThat(subject.getProperties()).hasSize(3)
-                                           .containsEntry("courses", Collections.singletonList(student.getCourses()))
-                                           .containsEntry("name", Arrays.asList(student.getName1(), student.getName()))
-                                           .containsEntry("address", Collections.singletonList(student.getAddress()));
+        assertThat(sut.getProperties()).hasSize(3)
+                                       .containsEntry("courses", Collections.singletonList(student.getCourses()))
+                                       .containsEntry("name", Arrays.asList(student.getName1(), student.getName()))
+                                       .containsEntry("address", Collections.singletonList(student.getAddress()));
     }
 }
