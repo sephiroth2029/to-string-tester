@@ -6,7 +6,7 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class StringMatcherTest
+public class StringSearchTest
 {
     private StringMatcher sut;
 

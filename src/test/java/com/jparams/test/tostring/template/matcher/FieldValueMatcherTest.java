@@ -65,6 +65,16 @@ public class FieldValueMatcherTest
         properties.put("field1", Collections.singletonList("def"));
 
         assertThatThrownBy(() -> sut.match("field1=def,field1=def]abc", new Subject(null, properties, null)))
-            .hasMessage("Expected 1 verify for field: field1. Found 2");
+            .hasMessage("Expected 1 matches for field: field1. Found: 2");
+    }
+
+    @Test
+    public void failsOnUnexpectedValue()
+    {
+        final Map<String, List<Object>> properties = new HashMap<>();
+        properties.put("field1", Collections.singletonList("def"));
+
+        assertThatThrownBy(() -> sut.match("field2=abc,field1=def]abc", new Subject(null, properties, null)))
+            .hasMessage("Unexpected values: field2=abc,");
     }
 }

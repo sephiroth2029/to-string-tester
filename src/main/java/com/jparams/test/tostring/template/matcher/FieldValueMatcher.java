@@ -1,13 +1,13 @@
 package com.jparams.test.tostring.template.matcher;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.regex.Pattern;
-import java.util.stream.IntStream;
+import java.util.stream.Collectors;
 
 import com.jparams.test.tostring.subject.Subject;
+import com.jparams.test.tostring.util.StringSearch;
 
 public class FieldValueMatcher implements Matcher
 {
@@ -30,92 +30,75 @@ public class FieldValueMatcher implements Matcher
     @Override
     public String match(final String snippet, final Subject subject)
     {
-        final StringBuilder stringBuilder = createEmptyStringBuilderOfLength(snippet.length());
-        int endIndex = 0;
+        final StringSearch stringSearch = new StringSearch(snippet);
 
         for (final String propertyName : subject.getPropertyNames())
         {
-            final List<Object> values = subject.getProperties().get(propertyName);
-
-            for (final Object value : values)
+            for (final Expected expected : getExpected(subject, propertyName))
             {
-                final List<Match> matches = findMatches(snippet, propertyName, value);
-                final long expectedMatches = values.stream().filter(o -> Objects.equals(o, value)).count();
+                final int found = stringSearch.search(expected.getPattern());
 
-                if (matches.isEmpty())
+                if (found == 0)
                 {
                     throw new MatcherException("Expected field: " + propertyName);
                 }
-                else if (matches.size() != expectedMatches)
+                else if (found != expected.getCount())
                 {
-                    throw new MatcherException(
-                        "Expected " + expectedMatches + " verify for field: " + propertyName + ". Found " + matches.size());
-                }
-                else
-                {
-                    for (final Match match : matches)
-                    {
-                        stringBuilder.replace(match.getStartIndex(), match.getEndIndex(), match.getMatchingText());
-                        endIndex = match.getEndIndex() > endIndex ? match.getEndIndex() : endIndex;
-                    }
+                    throw new MatcherException("Expected " + expected.getCount() + " matches for field: " + propertyName + ". Found: " + found);
                 }
             }
         }
 
-        return stringBuilder.substring(0, endIndex);
+        final String unmatched = stringSearch.getUnmatched();
+
+        if (!unmatched.isEmpty())
+        {
+            throw new MatcherException("Unexpected values: " + unmatched);
+        }
+
+        return stringSearch.getMatched();
     }
 
-    private StringBuilder createEmptyStringBuilderOfLength(final int length)
+    private List<Expected> getExpected(final Subject subject, final String property)
     {
-        final StringBuilder stringBuilder = new StringBuilder(length);
-        IntStream.range(0, length).forEach((i) -> stringBuilder.append(" "));
-        return stringBuilder;
+        return subject.getProperties()
+                      .getOrDefault(property, Collections.emptyList())
+                      .stream()
+                      .map(valueFormatter)
+                      .collect(Collectors.groupingBy(Function.identity()))
+                      .entrySet()
+                      .stream()
+                      .map(entry -> new Expected(entry.getValue().size(),
+                                                 createExpectedPattern(property, entry.getKey())))
+                      .collect(Collectors.toList());
     }
 
-    private List<Match> findMatches(final String snippet, final String propertyName, final Object value)
+    private Pattern createExpectedPattern(final String property, final String value)
     {
-        final String expectedValue = fieldFormatter.apply(propertyName) + keyValueSeparator + valueFormatter.apply(value);
+        final String expectedValue = fieldFormatter.apply(property) + keyValueSeparator + valueFormatter.apply(value);
         final String regex = String.format("%s(%s)?", Pattern.quote(expectedValue), Pattern.quote(entrySeparator));
-        final java.util.regex.Matcher matcher = Pattern.compile(regex).matcher(snippet);
-        final List<Match> matches = new ArrayList<>();
-
-        while (matcher.find())
-        {
-            final int startIndex = matcher.start();
-            final int endIndex = matcher.end();
-            final String matchingText = snippet.substring(startIndex, endIndex);
-            matches.add(new Match(startIndex, endIndex, matchingText));
-        }
-
-        return matches;
+        return Pattern.compile(regex);
     }
 
-    private static class Match
+    private static class Expected
     {
-        private final int startIndex;
-        private final int endIndex;
-        private final String matchingText;
+        private final int count;
+        private final Pattern pattern;
 
-        Match(final int startIndex, final int endIndex, final String matchingText)
+        public Expected(final int count, final Pattern pattern)
         {
-            this.startIndex = startIndex;
-            this.endIndex = endIndex;
-            this.matchingText = matchingText;
+            this.count = count;
+            this.pattern = pattern;
         }
 
-        public int getStartIndex()
+        public int getCount()
         {
-            return startIndex;
+            return count;
         }
 
-        public int getEndIndex()
+        public Pattern getPattern()
         {
-            return endIndex;
-        }
-
-        public String getMatchingText()
-        {
-            return matchingText;
+            return pattern;
         }
     }
 }

@@ -9,6 +9,7 @@ import com.jparams.object.builder.ObjectBuilder;
 import com.jparams.test.tostring.subject.Subject;
 import com.jparams.test.tostring.subject.SubjectFactory;
 import com.jparams.test.tostring.template.Template;
+import com.jparams.test.tostring.template.TemplateDiscovery;
 
 public final class ToStringTester
 {
@@ -44,7 +45,7 @@ public final class ToStringTester
      * @param fieldName
      * @return this
      */
-    public ToStringTester containsFields(final String fieldName)
+    public ToStringTester containsField(final String fieldName)
     {
         if (!subject.getProperties().containsKey(fieldName))
         {
@@ -67,17 +68,35 @@ public final class ToStringTester
         return this;
     }
 
+    /**
+     * Verify to string
+     *
+     * @throws VerificationError error is thrown if verification fails with reason for failure
+     */
     public void verify() throws VerificationError
     {
-        template.verify(new Subject(subject.getType(), properties, subject.getInstance()));
+        final Template templateToUse = template == null ? TemplateDiscovery.discover(subject.getInstance().toString()) : template;
+        templateToUse.verify(new Subject(subject.getType(), properties, subject.getInstance()));
     }
 
+    /**
+     * Create a to string test for a given type. An instance of this object will be created automatically.
+     *
+     * @param clazz
+     * @return tester
+     */
     public static ToStringTester forClass(final Class<?> clazz)
     {
         final Build<?> build = ObjectBuilder.withDefaultConfiguration().buildInstanceOf(clazz);
         return forInstance(build.get());
     }
 
+    /**
+     * Create a to string test for a given instance.
+     *
+     * @param instance
+     * @return tester
+     */
     public static ToStringTester forInstance(final Object instance)
     {
         return new ToStringTester(instance);

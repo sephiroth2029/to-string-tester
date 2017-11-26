@@ -5,6 +5,7 @@ import java.util.function.Function;
 import com.jparams.test.tostring.template.matcher.ClassNameMatcher;
 import com.jparams.test.tostring.template.matcher.FieldValueMatcher;
 import com.jparams.test.tostring.template.matcher.IdentityHashMatcher;
+import com.jparams.test.tostring.template.matcher.SimpleClassNameMatcher;
 import com.jparams.test.tostring.template.matcher.StringMatcher;
 
 public class Templates
@@ -17,4 +18,11 @@ public class Templates
                                                                   .match(new FieldValueMatcher(",", "=", Function.identity(), String::valueOf))
                                                                   .match(new StringMatcher("]"))
                                                                   .build();
+
+    public static Template GOOGLE_GUAVA = TemplateBuilder.newTemplate()
+                                                         .match(new SimpleClassNameMatcher())
+                                                         .match(new StringMatcher("{"))
+                                                         .match(new FieldValueMatcher(", ", "=", Function.identity(), String::valueOf))
+                                                         .match(new StringMatcher("}"))
+                                                         .build();
 }

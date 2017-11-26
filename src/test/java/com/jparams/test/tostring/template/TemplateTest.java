@@ -51,7 +51,7 @@ public class TemplateTest
         when(mockMatcher2.match(any(), any())).thenReturn("field1=2,");
 
         assertThatThrownBy(() -> sut.verify(new Subject(null, null, "field1=1,field2=2,field=3")))
-            .hasMessage("Verification failed. String value of test subject does not match expected template.");
+            .hasMessage("Verification failed. String value of test subject does not search expected template.");
     }
 
     @Test
