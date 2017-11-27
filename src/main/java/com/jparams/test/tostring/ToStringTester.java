@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.jparams.object.builder.Build;
+import com.jparams.object.builder.Configuration;
 import com.jparams.object.builder.ObjectBuilder;
 import com.jparams.test.tostring.subject.Subject;
 import com.jparams.test.tostring.subject.SubjectFactory;
@@ -87,7 +88,8 @@ public final class ToStringTester
      */
     public static ToStringTester forClass(final Class<?> clazz)
     {
-        final Build<?> build = ObjectBuilder.withDefaultConfiguration().buildInstanceOf(clazz);
+        final Configuration configuration = new Configuration().withDefaultProviders().withFailOnError(true);
+        final Build<?> build = ObjectBuilder.withConfiguration(configuration).buildInstanceOf(clazz);
         return forInstance(build.get());
     }
 

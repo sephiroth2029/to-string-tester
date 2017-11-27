@@ -38,7 +38,7 @@ public class Template
 
         if (!snippetBuilder.toString().isEmpty())
         {
-            throw new VerificationError("Verification failed. String value of test subject does not search expected template.");
+            throw new VerificationError("Verification failed. String value of test subject does not match expected template.");
         }
     }
 }

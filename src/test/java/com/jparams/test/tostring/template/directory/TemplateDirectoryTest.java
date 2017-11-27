@@ -21,10 +21,18 @@ public class TemplateDirectoryTest
     @Test
     public void discoverGuavaTemplate()
     {
-        final Template template = TemplateDirectory.findTemplate("DummyClass{b=b, a=a}");
-
-        assertThat(template).isSameAs(Templates.GOOGLE_GUAVA);
+        assertThat(TemplateDirectory.findTemplate("DummyClass{b=b, a=a}")).isSameAs(Templates.GOOGLE_GUAVA);
+        assertThat(TemplateDirectory.findTemplate("DummyClass{}")).isSameAs(Templates.GOOGLE_GUAVA);
     }
+
+    @Test
+    public void discoverIntellijTemplate()
+    {
+        final Template template = TemplateDirectory.findTemplate("DummyClass{b='b', a='a'}");
+
+        assertThat(template).isSameAs(Templates.INTELLI_J);
+    }
+
 
     @Test
     public void discoverEclipseTemplate()

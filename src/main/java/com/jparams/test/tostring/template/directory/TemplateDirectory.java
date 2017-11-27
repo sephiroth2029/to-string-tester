@@ -1,8 +1,9 @@
 package com.jparams.test.tostring.template.directory;
 
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 
 import com.jparams.test.tostring.template.Template;
@@ -16,7 +17,7 @@ public final class TemplateDirectory
 {
     static
     {
-        TEMPLATES = new ConcurrentHashMap<>();
+        TEMPLATES = Collections.synchronizedMap(new LinkedHashMap<>());
         register(new ApacheCommonsLang3Predicate(), Templates.APACHE_COMMONS_LANG_3);
         register(new EclipsePredicate(), Templates.ECLIPSE);
         register(new IntellijPredicate(), Templates.INTELLI_J);

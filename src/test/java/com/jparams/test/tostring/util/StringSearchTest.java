@@ -32,6 +32,6 @@ public class StringSearchTest
         subject.search(createPattern("field3", "3"));
 
         assertThat(subject.getMatched()).isEqualTo("field1=1,field2=2,field3=3");
-        assertThat(subject.getUnmatched()).isBlank();
+        assertThat(subject.getUnmatched()).isEmpty();
     }
 }
