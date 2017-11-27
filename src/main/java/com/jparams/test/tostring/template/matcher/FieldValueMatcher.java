@@ -61,6 +61,8 @@ public class FieldValueMatcher implements Matcher
 
     private List<Expected> getExpected(final Subject subject, final String property)
     {
+        final String formattedProperty = fieldFormatter.apply(property);
+
         return subject.getProperties()
                       .getOrDefault(property, Collections.emptyList())
                       .stream()
@@ -68,15 +70,14 @@ public class FieldValueMatcher implements Matcher
                       .collect(Collectors.groupingBy(Function.identity()))
                       .entrySet()
                       .stream()
-                      .map(entry -> new Expected(entry.getValue().size(),
-                                                 createExpectedPattern(property, entry.getKey())))
+                      .map(entry -> new Expected(entry.getValue().size(), createExpectedPattern(formattedProperty, entry.getKey())))
                       .collect(Collectors.toList());
     }
 
     private Pattern createExpectedPattern(final String property, final String value)
     {
-        final String expectedValue = fieldFormatter.apply(property) + keyValueSeparator + valueFormatter.apply(value);
-        final String regex = String.format("%s(%s)?", Pattern.quote(expectedValue), Pattern.quote(entrySeparator));
+        final String expectedValue = fieldFormatter.apply(property) + keyValueSeparator + value;
+        final String regex = String.format("%s(%s)?( )?", Pattern.quote(expectedValue), Pattern.quote(entrySeparator));
         return Pattern.compile(regex);
     }
 

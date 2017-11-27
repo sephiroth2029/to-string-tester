@@ -9,7 +9,7 @@ import com.jparams.object.builder.ObjectBuilder;
 import com.jparams.test.tostring.subject.Subject;
 import com.jparams.test.tostring.subject.SubjectFactory;
 import com.jparams.test.tostring.template.Template;
-import com.jparams.test.tostring.template.TemplateDiscovery;
+import com.jparams.test.tostring.template.directory.TemplateDirectory;
 
 public final class ToStringTester
 {
@@ -28,7 +28,7 @@ public final class ToStringTester
      * com.jparams.test.tostring.template.Templates}. You can also create your own custom template using {@link
      * com.jparams.test.tostring.template.TemplateBuilder}.
      *
-     * If a template is not explicitly provided, an attempt will be made to discover the template.
+     * If a template is not explicitly provided, an attempt will be made to discover the template using the {@link TemplateDirectory}
      *
      * @param template
      * @return this
@@ -75,7 +75,7 @@ public final class ToStringTester
      */
     public void verify() throws VerificationError
     {
-        final Template templateToUse = template == null ? TemplateDiscovery.discover(subject.getInstance().toString()) : template;
+        final Template templateToUse = template == null ? TemplateDirectory.findTemplate(subject.getInstance().toString()) : template;
         templateToUse.verify(new Subject(subject.getType(), properties, subject.getInstance()));
     }
 

@@ -53,9 +53,9 @@ public class FieldValueMatcherTest
         final Map<String, List<Object>> properties = new HashMap<>();
         properties.put("field1", Arrays.asList("def", "def"));
 
-        final String match = sut.match("field1=def,field1=def]abc", new Subject(null, properties, null));
+        final String match = sut.match("field1=def, field1=def]abc", new Subject(null, properties, null));
 
-        assertThat(match).isEqualTo("field1=def,field1=def");
+        assertThat(match).isEqualTo("field1=def, field1=def");
     }
 
     @Test
