@@ -39,8 +39,7 @@ public void myTest()
 }
 ```
 
-Wait! What just happened? To String Tester is very clever, when given a class to test, it uses the amazing [Object Builder](https://github
-.com/jparams/object-builder) library to create an instance of the class instantiated with random values.
+Wait! What just happened? To String Tester is very clever, when given a class to test, it uses the amazing [Object Builder](https://github.com/jparams/object-builder) library to create an instance of the class instantiated with random values.
 
 To String Tester even knows the template of the toString() output, or at least it tries to discover it using pattern matching. Out of the box the 
 library understands the 
