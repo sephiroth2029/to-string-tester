@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 public class ApacheCommonsLang3Predicate implements Predicate<String>
 {
-    private static final Pattern PATTERN_APACHE_COMMONS_LANG_3 = Pattern.compile("^(.*)@[0-9A-Za-z]{8}\\[[\\s\\S]*]$");
+    private static final Pattern PATTERN_APACHE_COMMONS_LANG_3 = Pattern.compile("^(.*)@(.*)\\[[\\s\\S]*]$");
 
     @Override
     public boolean test(final String toString)
