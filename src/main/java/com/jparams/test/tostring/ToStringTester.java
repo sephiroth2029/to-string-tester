@@ -31,7 +31,7 @@ public final class ToStringTester
      *
      * If a template is not explicitly provided, an attempt will be made to discover the template using the {@link TemplateDirectory}
      *
-     * @param template
+     * @param template template to match against
      * @return this
      */
     public ToStringTester usingTemplate(final Template template)
@@ -43,7 +43,7 @@ public final class ToStringTester
     /**
      * Contains the given field. This method can be called multiple times.
      *
-     * @param fieldName
+     * @param fieldName field name
      * @return this
      */
     public ToStringTester containsField(final String fieldName)
@@ -60,7 +60,7 @@ public final class ToStringTester
     /**
      * Contains all subject defined on the class.
      *
-     * @return
+     * @return this
      */
     public ToStringTester containsAllFields()
     {
@@ -83,7 +83,7 @@ public final class ToStringTester
     /**
      * Create a to string test for a given type. An instance of this object will be created automatically.
      *
-     * @param clazz
+     * @param clazz class to test
      * @return tester
      */
     public static ToStringTester forClass(final Class<?> clazz)
@@ -96,7 +96,7 @@ public final class ToStringTester
     /**
      * Create a to string test for a given instance.
      *
-     * @param instance
+     * @param instance instance to test
      * @return tester
      */
     public static ToStringTester forInstance(final Object instance)

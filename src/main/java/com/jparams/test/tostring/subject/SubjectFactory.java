@@ -1,6 +1,7 @@
 package com.jparams.test.tostring.subject;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,11 @@ public final class SubjectFactory
         {
             for (final Field field : clazz.getDeclaredFields())
             {
+                if (Modifier.isStatic(field.getModifiers()))
+                {
+                    continue;
+                }
+
                 field.setAccessible(true);
 
                 try
