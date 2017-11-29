@@ -45,7 +45,7 @@ public final class TemplateDirectory
             }
         }
 
-        throw new TemplateMatchException("Failed to findTemplate template of toString(). Explicitly define a template.");
+        throw new TemplateMatchException("Failed to find template template of toString(). Explicitly define a template.");
     }
 
     public static class TemplateMatchException extends RuntimeException
