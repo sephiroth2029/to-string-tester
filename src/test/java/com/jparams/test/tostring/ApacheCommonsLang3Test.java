@@ -30,6 +30,7 @@ public class ApacheCommonsLang3Test
     {
         ToStringTester.forClass(DummyClass.class)
                       .usingTemplate(Templates.APACHE_COMMONS_LANG_3)
+                      .containsField("array")
                       .containsField("a")
                       .containsField("b")
                       .verify();
@@ -37,12 +38,14 @@ public class ApacheCommonsLang3Test
 
     public static class DummyClass extends DummyParent
     {
+        private final String[] array = {"a", "b" };
         private final String a = "a";
 
         @Override
         public String toString()
         {
             return new ToStringBuilder(this)
+                .append("array", array)
                 .append("a", a)
                 .appendSuper(super.toString())
                 .toString();

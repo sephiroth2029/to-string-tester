@@ -31,6 +31,7 @@ public class GuavaToStringTest
     {
         ToStringTester.forClass(DummyClass.class)
                       .usingTemplate(Templates.GOOGLE_GUAVA)
+                      .containsField("array")
                       .containsField("a")
                       .containsField("b")
                       .verify();
@@ -38,12 +39,14 @@ public class GuavaToStringTest
 
     public static class DummyClass extends DummyParent
     {
+        private final String[] array = {"a", "b" };
         private final String a = "a";
 
         @Override
         public String toString()
         {
             return MoreObjects.toStringHelper(this)
+                              .add("array", array)
                               .add("b", super.b)
                               .add("a", a)
                               .toString();

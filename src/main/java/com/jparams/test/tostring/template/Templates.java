@@ -1,5 +1,8 @@
 package com.jparams.test.tostring.template;
 
+import com.jparams.test.tostring.template.converter.ApacheLang3ValueConverter;
+import com.jparams.test.tostring.template.converter.IntelliJValueConverter;
+import com.jparams.test.tostring.template.converter.SimpleValueConverter;
 import com.jparams.test.tostring.template.matcher.ClassNameMatcher;
 import com.jparams.test.tostring.template.matcher.FieldValueMatcher;
 import com.jparams.test.tostring.template.matcher.IdentityHashMatcher;
@@ -16,7 +19,7 @@ public class Templates
                        .match(new StringMatcher("@"))
                        .match(new IdentityHashMatcher())
                        .match(new StringMatcher("["))
-                       .match(new FieldValueMatcher(",", "=", identity(), String::valueOf))
+                       .match(new FieldValueMatcher(",", "=", identity(), new ApacheLang3ValueConverter()))
                        .match(new StringMatcher("]"))
                        .build();
 
@@ -24,7 +27,7 @@ public class Templates
         TemplateBuilder.newTemplate()
                        .match(new SimpleClassNameMatcher())
                        .match(new StringMatcher("{"))
-                       .match(new FieldValueMatcher(", ", "=", identity(), String::valueOf))
+                       .match(new FieldValueMatcher(", ", "=", identity(), new SimpleValueConverter()))
                        .match(new StringMatcher("}"))
                        .build();
 
@@ -32,7 +35,7 @@ public class Templates
         TemplateBuilder.newTemplate()
                        .match(new SimpleClassNameMatcher())
                        .match(new StringMatcher("{"))
-                       .match(new FieldValueMatcher(", ", "=", identity(), val -> String.format("'%s'", val)))
+                       .match(new FieldValueMatcher(", ", "=", identity(), new IntelliJValueConverter()))
                        .match(new StringMatcher("}"))
                        .build();
 
@@ -41,7 +44,7 @@ public class Templates
                        .match(new SimpleClassNameMatcher())
                        .match(new StringMatcher(" "))
                        .match(new StringMatcher("["))
-                       .match(new FieldValueMatcher(", ", "=", identity(), String::valueOf))
+                       .match(new FieldValueMatcher(", ", "=", identity(), new SimpleValueConverter()))
                        .match(new StringMatcher("]"))
                        .build();
 
