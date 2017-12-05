@@ -11,6 +11,11 @@ import com.jparams.test.tostring.template.matcher.MatcherException;
 
 public class Template
 {
+    private static final String ERROR_MESSAGE = "Verification failed:\n"
+        + "\n"
+        + "Test Subject : \"%s\"\n"
+        + "Failure      : \"%s\"";
+
     private final List<Matcher> matchers;
 
     public Template(final List<Matcher> matchers)
@@ -32,13 +37,13 @@ public class Template
             }
             catch (final MatcherException e)
             {
-                throw new VerificationError("Verification failed. " + e.getMessage());
+                throw new VerificationError(String.format(ERROR_MESSAGE, toString, e.getMessage()));
             }
         }
 
         if (!snippetBuilder.toString().isEmpty())
         {
-            throw new VerificationError("Verification failed. String value of test subject does not match expected template.");
+            throw new VerificationError(String.format(ERROR_MESSAGE, toString, "String value of test subject does not match expected template."));
         }
     }
 }
